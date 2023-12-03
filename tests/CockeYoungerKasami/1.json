@@ -1,0 +1,26 @@
+{
+    "rules": [
+        "S -> AC",
+        "C -> FD",
+        "C -> BF",
+        "C -> b",
+        "D -> BF",
+        "D -> b",
+        "A -> a",
+        "B -> b",
+        "F -> AE",
+        "E -> FB",
+        "E -> b"
+    ],
+    "words": [
+        "aabb",
+        "abaabb",
+        "abba"
+    ],
+    "answers": [
+        true,
+        true,
+        false
+    ],
+    "name": "Семинарский test"
+}
