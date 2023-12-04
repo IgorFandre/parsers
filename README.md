@@ -41,7 +41,7 @@ $ pip install -r requirements.txt
 
 Запуск самой программы:
 ```bash
-$ python3 main.py
+$ python3 early_parser.py
 ```
 
 ## Источники
