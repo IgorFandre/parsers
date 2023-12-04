@@ -111,3 +111,23 @@ class Earley_Parser:
                     new_situation_set.add(return_trans.copy(mv_offset=1))
         self.situation_sets_list[index].update(new_situation_set)
 
+if __name__ == '__main__':
+    non_terminals = input().split()
+    terminals = input().split()
+
+    rules_number = int(input())
+    rules = []
+    for i in range(rules_number):
+        rules.append(Rule.parse_rule(input()))
+
+    start_symbol = input()
+
+    grammar = Grammatics(terminals, non_terminals, start_symbol, rules)
+
+    early_parser = Earley_Parser()
+    early_parser.fit(grammar)
+    
+    words_number = int(input())
+    for i in range(words_number):
+        word = input()
+        print(early_parser.predict(word))
