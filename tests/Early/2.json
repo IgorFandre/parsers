@@ -1,4 +1,5 @@
 {
+    "regym": "WORDS",
     "rules": [
         "S -> SS",
         "S -> (S)",
