@@ -46,14 +46,17 @@ class Earley_Parser:
 
         self.start = "&"
         self.grammar.non_terminals.add(self.start)
+
         if self.grammar.regym == Grammatics.WORDS:
             self.start_rule = Rule(self.start, self.grammar.start_token)
         elif self.grammar.regym == Grammatics.SENTENCES:
             self.start_rule = Rule(self.start, self.grammar.start_token.split())
+
         self.rules = {non_term : {Rule(rule.left, rule.right)\
                                     for rule in self.grammar.rules if rule.left == non_term}\
                                                     for non_term in self.grammar.non_terminals}
         self.rules.get(self.start, set()).add(self.start_rule)
+
         return self
 
     def predict(self, tokens) -> bool:
