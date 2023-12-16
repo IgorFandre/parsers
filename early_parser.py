@@ -60,22 +60,25 @@ class Earley_Parser:
         self.situation_sets_list = [set() for _ in range(len(tokens) + 1)]
         self.situation_sets_list[0].add(Early_Situation(self.start_rule))
 
-        check = 0
+        not_checked_set = self.situation_sets_list[0]
         while True: # Fisrt step. Fill situation_sets_list[0] set
-            check = len(self.situation_sets_list[0])
-            self.__complete_situations(0)
-            self.__predict_situations(0)
-            if check == len(self.situation_sets_list[0]): # Check if set changed
+            last_added = set()
+            last_added.update(self.__complete_situations(0, not_checked_set))
+            last_added.update(self.__predict_situations(0, not_checked_set))
+            if len(not_checked_set.union(last_added)) == len(last_added): # Check if set changed
                 break
+            not_checked_set = last_added
 
         for index in range(len(tokens)): # First step. Try to read the symbol tokens[index] and fill situation_sets_list[index + 1]
             self.__scan_situations(index + 1, tokens[index])
+            not_checked_set = self.situation_sets_list[index + 1]
             while True:
-                check = len(self.situation_sets_list[index + 1])
-                self.__complete_situations(index + 1)
-                self.__predict_situations(index + 1)
-                if check == len(self.situation_sets_list[index + 1]):
+                last_added = set()
+                last_added.update(self.__complete_situations(index + 1, not_checked_set))
+                last_added.update(self.__predict_situations(index + 1, not_checked_set))
+                if len(not_checked_set.union(last_added)) == len(last_added):
                     break
+                not_checked_set = last_added
 
         finish_situation = Early_Situation(self.start_rule, 1)
         answer = finish_situation in self.situation_sets_list[-1] # Check the answer
@@ -88,9 +91,9 @@ class Earley_Parser:
             if situation.get_cur_token() == token:
                 self.situation_sets_list[index].add(situation.copy(mv_offset=1))
 
-    def __predict_situations(self, index: int):
+    def __predict_situations(self, index: int, situations: set[Early_Situation]) -> set[Early_Situation]:
         new_situation_set = set()
-        for situation in self.situation_sets_list[index]:
+        for situation in situations:
             if situation.completed():
                 continue
             cur_char = situation.get_cur_token()
@@ -100,11 +103,13 @@ class Earley_Parser:
             for rule in self.rules[cur_char]:
                 new_situation = Early_Situation(rule, link=index)
                 new_situation_set.add(new_situation)
-        self.situation_sets_list[index].update(new_situation_set)
 
-    def __complete_situations(self, index: int):
+        self.situation_sets_list[index].update(new_situation_set)
+        return new_situation_set
+
+    def __complete_situations(self, index: int, situations: set[Early_Situation]) -> set[Early_Situation]:
         new_situation_set = set()
-        for situation in self.situation_sets_list[index]:
+        for situation in situations:
             if not situation.completed():
                 continue
             for return_trans in self.situation_sets_list[situation.link]:
@@ -113,6 +118,7 @@ class Earley_Parser:
                 if return_trans.get_cur_token() == situation.rule.left:
                     new_situation_set.add(return_trans.copy(mv_offset=1))
         self.situation_sets_list[index].update(new_situation_set)
+        return new_situation_set
 
 if __name__ == '__main__':
     non_terminals = input().split()
