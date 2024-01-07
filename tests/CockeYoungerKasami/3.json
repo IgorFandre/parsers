@@ -1,0 +1,43 @@
+{
+    "regym": "WORDS",
+    "rules": [
+        "S -> ",
+        "S -> a",
+        "S -> b",
+
+        "X -> a",
+        "X -> b",
+
+        "S -> AK",
+        "X -> AK",
+        "K -> XA",
+        "S -> AA",
+        "X -> AA",
+
+        "S -> BL",
+        "X -> BL",
+        "L -> XB",
+        "S -> BB",
+        "X -> BB",
+
+        "A -> a",
+        "B -> b"
+    ],
+    "words": [
+        "",
+        "abaaba",
+        "ababa",
+        "a",
+        "aaaabbb",
+        "bababa"
+    ],
+    "answers": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+    ],
+    "name": "Палиндром test"
+}

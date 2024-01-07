@@ -1,0 +1,19 @@
+{
+    "regym": "WORDS",
+    "rules": [
+        "S -> aFbF",
+        "F -> aFb",
+        "F -> "
+    ],
+    "words": [
+        "aabb",
+        "abaabb",
+        "abba"
+    ],
+    "answers": [
+        true,
+        true,
+        false
+    ],
+    "name": "Семинарский test"
+}
